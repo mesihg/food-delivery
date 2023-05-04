@@ -27,6 +27,7 @@ class MenuAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class MenuDetailAPIView(APIView):
     @authentication_classes([BasicAuthentication])
     @permission_classes([IsAuthenticated])
@@ -57,3 +58,12 @@ class MenuDetailAPIView(APIView):
                 pass
         menu.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MenuByRestaurantAPIView(APIView):
+    @authentication_classes([BasicAuthentication])
+    @permission_classes([IsAuthenticated])
+    def get(self, request, restaurant_id):
+        menus = Menu.objects.filter(restaurant_id=restaurant_id)
+        serializer = MenuSerializer(menus, many=True)
+        return Response(serializer.data)

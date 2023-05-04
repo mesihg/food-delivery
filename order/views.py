@@ -20,7 +20,6 @@ class OrderAPIView(APIView):
     @permission_classes([IsAuthenticated])
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
-        print("data: ",request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

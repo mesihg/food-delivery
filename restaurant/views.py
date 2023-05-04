@@ -55,7 +55,7 @@ class RestaurantDetailAPIView(APIView):
         if restaurant.image:
             try:
                 image_path = os.path.join(
-                settings.MEDIA_ROOT, str(restaurant.image))
+                    settings.MEDIA_ROOT, str(restaurant.image))
                 os.remove(image_path)
             except FileNotFoundError:
                 pass

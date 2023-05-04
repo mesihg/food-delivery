@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import authentication_classes, permission_classes

@@ -1,10 +1,3 @@
-# from django.urls import path
-# from .views import OrderAPIView, OrderDetailAPIView
-
-# urlpatterns = [
-#     path('orders/', OrderAPIView.as_view(), name="order_list"),
-#     path('orders/<uuid:pk>/', OrderDetailAPIView.as_view(), name="order"),
-# ]
 from django.urls import path
 from .views import OrderAPIView, OrderItemAPIView
 

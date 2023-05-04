@@ -13,23 +13,24 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    ordered_items = OrderItemSerializer(many=True)
+    order_items = OrderItemSerializer(many=True)
     # menu_items = MenuSerializer(many=True)
+
     class Meta:
         model = Order
-        fields = ('id', 'user', 'ordered_items', 'status', 'created_at', 'total')
+        fields = ('id', 'user', 'order_items', 'status', 'created_at', 'total')
         read_only_fields = ('id', 'user', 'created_at', 'total')
 
     def create(self, validated_data):
-        ordered_items_data = validated_data.pop('ordered_items')
-        menu_items_data = validated_data.pop('ordered_items')
+        ordered_items_data = validated_data.pop('order_items')
+        # menu_items_data = validated_data.pop('order_items')
         order = Order.objects.create(**validated_data)
         for item_data in ordered_items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order
 
     def update(self, instance, validated_data):
-        ordered_items_data = validated_data.pop('ordered_items')
+        ordered_items_data = validated_data.pop('order_items')
         ordered_items = instance.order_items.all()
         ordered_items = list(ordered_items)
         instance.status = validated_data.get('status', instance.status)
@@ -42,4 +43,3 @@ class OrderSerializer(serializers.ModelSerializer):
             item.save()
 
         return instance
-

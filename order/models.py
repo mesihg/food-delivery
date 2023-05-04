@@ -18,14 +18,12 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=30, choices=STATUS_CHOICE, default='pending')
-    ordered_items = models.ManyToManyField(Menu, related_name='orders', blank=True, through='OrderItem')
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def total(self):
         total = 0
-        for item in self.order_items.all():
-            total += item.item.price * item.quantity
+        total = sum(item.get_total() for item in self.orderitem_set.all())
         return total
 
     def __str__(self):
@@ -33,11 +31,12 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    item = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='order_item')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(Menu, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    item_price = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
 
+    def get_total(self):
+        return self.item.price * self.quantity
 
     def save(self, *args, **kwargs):
         self.item_price = self.item.price

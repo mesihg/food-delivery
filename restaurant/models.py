@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from io import BytesIO
 from PIL import Image
 
+
 class Restaurant(models.Model):
     RESTAURANT_TYPE_CHOICES = [
         ('italian', 'Italian'),
@@ -24,13 +25,13 @@ class Restaurant(models.Model):
     restaurant_type = models.CharField(
         max_length=10, choices=RESTAURANT_TYPE_CHOICES)
     phone_number = models.CharField(max_length=20)
+    prep_time = models.IntegerField(default=15)
     address = models.CharField(max_length=200)
     location = models.JSONField(null=True, blank=True)
     price_range = models.CharField(max_length=20, null=True, blank=True)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -49,7 +50,7 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def image_tag(self):
         return mark_safe('<img src="{}" width="30" height="30" />'.format(self.image.url))
 

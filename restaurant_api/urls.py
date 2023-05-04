@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import (
@@ -16,3 +16,6 @@ urlpatterns = [
     path('api/users/', include('user.urls')),
     path('api/order/', include('order.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# re_path(r'^admin(/)?$', admin.site.urls, name='admin'),
+# re_path(r'^admin/?$', admin.site.urls, name='admin'),

@@ -8,14 +8,18 @@ from django.utils.text import slugify
 from io import BytesIO
 from PIL import Image
 
+
 class Menu(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu')
+    restaurant = models.ForeignKey(
+        Restaurant, on_delete=models.CASCADE, related_name='menu')
     name = models.CharField(max_length=200)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
-    discount = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    rating = models.DecimalField(
+        max_digits=3, decimal_places=2, null=True, blank=True)
+    discount = models.DecimalField(
+        max_digits=3, decimal_places=2, null=True, blank=True)
     # image = models.ImageField(upload_to='menu_images/', null=True, blank=True)
     image = models.ImageField(upload_to='menu_images/', default='default.jpg')
 
@@ -24,7 +28,6 @@ class Menu(models.Model):
     menu_ingredients = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -43,9 +46,8 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def image_tag(self):
         return mark_safe('<img src="{}" width="30" height="30" />'.format(self.image.url))
 
     image_tag.short_description = 'Image'
-
